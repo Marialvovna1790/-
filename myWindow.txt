@@ -1,0 +1,64 @@
+package com.company;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+
+public class myWindow extends JFrame{
+    JPanel per1 = new JPanel(new GridLayout());
+    JPanel per2 = new JPanel(new GridLayout());
+
+    JButton txt = new JButton("add"); //добавляет написанный текст в поле
+    JTextArea jta = new JTextArea();
+    JScrollPane mer = new JScrollPane(jta);
+    JTextField mur = new JTextField();
+
+    PrintWriter pw = new PrintWriter(new FileWriter("хех"));
+    myWindow() throws IOException {
+        super("улучшенная телега");
+        setSize(400, 600); //устанавливаем размеры по нашему хотению
+        setMinimumSize(new Dimension(400, 600));
+
+        jta.setLineWrap(true);
+        jta.setEditable(false);
+
+
+        txt.addActionListener(e -> {
+            sendMessage();
+        });
+        mur.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) sendMessage();//обработка событий клавиатуры
+            }
+        });
+
+        per1.add(mer);
+        per2.add(mur);
+        per2.add(txt);
+
+        add(per1);
+        add("South", per2);
+
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//позволяет указать действие-закрываем окно после нажатия крестика
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    void sendMessage() {
+        String out = mur.getText();
+        jta.append( "пользоваель 1 - " + out + "\n");
+        mur.grabFocus();//захватывает фокус
+        mur.setText("");
+
+    }
+
+
+}
+
